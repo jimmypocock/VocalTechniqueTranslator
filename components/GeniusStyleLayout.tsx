@@ -14,6 +14,7 @@ import { FeedbackModal } from './FeedbackModal';
 import { MessageSquare } from 'lucide-react';
 
 export default function GeniusStyleLayout() {
+  const enableFeedback = process.env.NEXT_PUBLIC_ENABLE_FEEDBACK === 'true';
   const [intensity, setIntensity] = useState(8); // Default to Maximum
   const [inputLyrics, setInputLyrics] = useState('');
   const [outputLyrics, setOutputLyrics] = useState('');
@@ -493,18 +494,20 @@ export default function GeniusStyleLayout() {
                 </h2>
                 {outputLyrics && (
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={handleFeedbackClick}
-                      className="inline-flex items-center px-3 py-1.5 rounded-md border-2 font-medium transition-all duration-100 text-xs
-                        border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 
-                        hover:border-gray-400 dark:hover:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 
-                        text-gray-700 dark:text-gray-300"
-                      title="Suggest better pronunciation"
-                      aria-label="Suggest better pronunciation"
-                    >
-                      <MessageSquare className="w-3.5 h-3.5" />
-                      <span className="ml-1.5">Feedback</span>
-                    </button>
+                    {enableFeedback && (
+                      <button
+                        onClick={handleFeedbackClick}
+                        className="inline-flex items-center px-3 py-1.5 rounded-md border-2 font-medium transition-all duration-100 text-xs
+                          border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 
+                          hover:border-gray-400 dark:hover:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 
+                          text-gray-700 dark:text-gray-300"
+                        title="Suggest better pronunciation"
+                        aria-label="Suggest better pronunciation"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span className="ml-1.5">Feedback</span>
+                      </button>
+                    )}
                     <button
                       onClick={handleCopy}
                       className={`
@@ -724,16 +727,18 @@ export default function GeniusStyleLayout() {
             </h2>
             {outputLyrics && (
               <div className="flex items-center gap-2">
-                <button
-                  onClick={handleFeedbackClick}
-                  className="px-4 py-2 rounded-lg transition-all duration-100 flex items-center gap-2 text-sm font-semibold shadow-sm
-                    bg-gray-600 text-white hover:bg-gray-700 hover:shadow-md hover:scale-105"
-                  title="Suggest better pronunciation"
-                  aria-label="Suggest better pronunciation"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  Feedback
-                </button>
+                {enableFeedback && (
+                  <button
+                    onClick={handleFeedbackClick}
+                    className="px-4 py-2 rounded-lg transition-all duration-100 flex items-center gap-2 text-sm font-semibold shadow-sm
+                      bg-gray-600 text-white hover:bg-gray-700 hover:shadow-md hover:scale-105"
+                    title="Suggest better pronunciation"
+                    aria-label="Suggest better pronunciation"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    Feedback
+                  </button>
+                )}
                 <button
                   onClick={addToFavorites}
                   className={`
@@ -989,13 +994,15 @@ export default function GeniusStyleLayout() {
       </div>
 
       {/* Feedback Modal */}
-      <FeedbackModal
-        isOpen={feedbackModalOpen}
-        onClose={() => setFeedbackModalOpen(false)}
-        originalWord={feedbackWord.original}
-        currentTransformation={feedbackWord.transformed}
-        intensity={intensity}
-      />
+      {enableFeedback && (
+        <FeedbackModal
+          isOpen={feedbackModalOpen}
+          onClose={() => setFeedbackModalOpen(false)}
+          originalWord={feedbackWord.original}
+          currentTransformation={feedbackWord.transformed}
+          intensity={intensity}
+        />
+      )}
     </div>
   );
 }

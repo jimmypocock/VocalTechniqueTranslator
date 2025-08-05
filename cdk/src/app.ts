@@ -62,7 +62,8 @@ const cdnStack = new CdnStack(app, 'VTT-CDN', {
   certificate: certificateStack.certificate,
   redirectFunction: edgeFunctionsStack.redirectFunction,
   securityHeadersFunction: edgeFunctionsStack.securityHeadersFunction,
-  webAclArn: wafStack.webAcl.attrArn,
+  webAclArn: undefined, // WAF is optional - uncomment next line to enable
+  // webAclArn: wafStack.webAcl.attrArn,
   env: usEast1Env,
   description: 'CDN distribution for Vocal Technique Translator',
 });
@@ -71,7 +72,7 @@ const cdnStack = new CdnStack(app, 'VTT-CDN', {
 cdnStack.addDependency(foundationStack);
 cdnStack.addDependency(certificateStack);
 cdnStack.addDependency(edgeFunctionsStack);
-cdnStack.addDependency(wafStack);
+// cdnStack.addDependency(wafStack); // Only add if WAF is enabled
 
 // 6. Monitoring Stack - CloudWatch alarms and dashboards
 const monitoringStack = new MonitoringStack(app, 'VTT-Monitoring', {
