@@ -9,6 +9,7 @@ import { FeedbackModal } from './FeedbackModal';
 import { MessageSquare } from 'lucide-react';
 
 export default function VocalTranslatorApp() {
+  const enableFeedback = process.env.NEXT_PUBLIC_ENABLE_FEEDBACK === 'true';
   const [intensity, setIntensity] = useState(4);
   const [inputLyrics, setInputLyrics] = useState('');
   const [outputLyrics, setOutputLyrics] = useState('');
@@ -148,15 +149,17 @@ export default function VocalTranslatorApp() {
             </h2>
             {outputLyrics && (
               <div className="flex gap-2">
-                <button
-                  onClick={handleFeedbackClick}
-                  className="px-4 py-2 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 flex items-center gap-2"
-                  title="Suggest better pronunciation"
-                  aria-label="Suggest better pronunciation"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  Feedback
-                </button>
+                {enableFeedback && (
+                  <button
+                    onClick={handleFeedbackClick}
+                    className="px-4 py-2 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                    title="Suggest better pronunciation"
+                    aria-label="Suggest better pronunciation"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    Feedback
+                  </button>
+                )}
                 <button
                   onClick={handleCopy}
                   className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200 flex items-center gap-2"
@@ -209,13 +212,15 @@ export default function VocalTranslatorApp() {
         <Examples />
       </div>
       
-      <FeedbackModal
-        isOpen={feedbackModalOpen}
-        onClose={() => setFeedbackModalOpen(false)}
-        originalWord={feedbackWord.original}
-        currentTransformation={feedbackWord.transformed}
-        intensity={intensity}
-      />
+      {enableFeedback && (
+        <FeedbackModal
+          isOpen={feedbackModalOpen}
+          onClose={() => setFeedbackModalOpen(false)}
+          originalWord={feedbackWord.original}
+          currentTransformation={feedbackWord.transformed}
+          intensity={intensity}
+        />
+      )}
     </div>
   );
 }
