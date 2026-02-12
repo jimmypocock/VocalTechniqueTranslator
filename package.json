@@ -62,7 +62,7 @@
     "feedback:help": "echo '📊 Feedback Commands:\n  npm run feedback - Quick export to CSV\n  npm run feedback:analyze - Export with analysis\n  npm run feedback:csv - Export CSV only\n  npm run feedback:json - Export JSON only\n  npm run feedback:view - Open web viewer\n  npm run feedback:cli - Interactive feedback manager\n  npm run deploy:feedback - Deploy feedback infrastructure'"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^6.11.2",
+    "@aws-amplify/ui-react": "^6.14.0",
     "@aws-sdk/client-s3": "^3.826.0",
     "aws-amplify": "^6.15.0",
     "lucide-react": "^0.513.0",
